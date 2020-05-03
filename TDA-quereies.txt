@@ -1,0 +1,73 @@
+CREATE DATABASE TDA;
+
+CREATE TABLE USERS
+(
+    UserID VARCHAR(30) NOT NULL,
+    Name VARCHAR(50),
+    Employment VARCHAR(50),
+    Email VARCHAR(100),
+    Income float,
+    DOB date,
+    Username VARCHAR(50) NOT NULL,
+    UserPassword VARCHAR(50) NOT NULL,
+    Address VARCHAR(100),
+    Objective VARCHAR(50),
+    Phone int,
+    SSN int,
+    PRIMARY KEY (UserID)
+);
+
+CREATE TABLE TRANSACTIONS
+(
+    TransactionID VARCHAR(30) NOT NULL,
+    Side VARCHAR(15),
+    TransDate date,
+    Filled bit,
+    Symbol VARCHAR(30),
+    Quantity int,
+    OrderType VARCHAR(30),
+    UserID VARCHAR(30) NOT NULL,
+    PRIMARY KEY (TransactionID),
+    FOREIGN KEY (UserID) REFERENCES USERS(UserID)
+);
+
+CREATE TABLE POSITIONS
+(
+    PositionID VARCHAR(30) NOT NULL,
+    ShareCount int,
+    CostBasis  float,
+    MarketValue float,
+    OpenDate date,
+    CloseDate date,
+    Symbol VARCHAR(15),
+    RealizedGain float,
+    UnrealizedGain float,
+    UserID VARCHAR(30) NOT NULL,
+    TransactionID VARCHAR(30) NOT NULL,
+    PRIMARY KEY (PositionID),
+    FOREIGN KEY (UserID) REFERENCES USERS(UserID),
+    FOREIGN KEY (TransactionID) REFERENCES TRANSACTIONS(TransactionID)
+);
+
+CREATE TABLE COMPANY
+(
+    CompanyID VARCHAR(30) NOT NULL,
+    CompanyName VARCHAR(30),
+    CompanyContact VARCHAR(30),
+    ShareCount int,
+    PRIMARY KEY (CompanyID)
+);
+
+CREATE TABLE PURCHASEEVENT
+(
+    PurchaseEventID VARCHAR(30) NOT NULL,
+    HasReturned bit,
+    Item VARCHAR(50),
+    PurchaseDate date,
+    Cost float,
+    CompanyID VARCHAR(30) NOT NULL,
+    UserID VARCHAR(30) NOT NULL,
+    PRIMARY KEY (PurchaseEventID),
+    FOREIGN KEY (CompanyID) REFERENCES COMPANY(CompanyID),
+    FOREIGN KEY (UserID) REFERENCES USERS(UserID)
+);

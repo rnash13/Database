@@ -1,0 +1,7 @@
+CREATE VIEW NoReturns AS
+(SELECT users.UserID
+  FROM users INNER JOIN purchaseevent 
+  ON (users.UserID = purchaseevent.UserID)
+  WHERE purchaseevent.HasReturned = FALSE AND purchaseevent.PurchaseDate >= DATEADD(MONTH, -1, GETDATE())
+  GROUP BY users.UserID
+);
